@@ -31,13 +31,21 @@ class Blockchain {
     if (JSON.stringify(chain[0]) !== JSON.stringify(Block.genesis()))
       return false;
     for (let i = 1; i < chain.length; i++) {
-      const { timestamp, lastHash, hash, data } = chain[i];
-
+      const { timestamp, lastHash, hash, data, difficulty, nonce } = chain[i];
+      const lastDifficulty = chain[i - 1].difficulty;
       const actualLastHash = chain[i - 1].hash;
 
       if (lastHash !== actualLastHash) return false;
-      const validatedHash = cryptoHash(timestamp, lastHash, data);
+      const validatedHash = cryptoHash(
+        timestamp,
+        lastHash,
+        data,
+        nonce,
+        difficulty
+      );
       if (validatedHash !== hash) return false;
+
+      if (Math.abs(lastDifficulty - difficulty) > 1) return false;
     }
     return true;
   }
