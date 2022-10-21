@@ -1,4 +1,4 @@
-const Blockchain = require("./blockchain");
+const Blockchain = require("../blockchain");
 const hexToBinary = require("hex-to-binary");
 
 const blockchain = new Blockchain();
